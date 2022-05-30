@@ -4173,6 +4173,83 @@
                 loadInSlide
             });
         }
+        function Grid(_ref) {
+            let {swiper, extendParams} = _ref;
+            extendParams({
+                grid: {
+                    rows: 1,
+                    fill: "column"
+                }
+            });
+            let slidesNumberEvenToRows;
+            let slidesPerRow;
+            let numFullColumns;
+            const initSlides = slidesLength => {
+                const {slidesPerView} = swiper.params;
+                const {rows, fill} = swiper.params.grid;
+                slidesPerRow = slidesNumberEvenToRows / rows;
+                numFullColumns = Math.floor(slidesLength / rows);
+                if (Math.floor(slidesLength / rows) === slidesLength / rows) slidesNumberEvenToRows = slidesLength; else slidesNumberEvenToRows = Math.ceil(slidesLength / rows) * rows;
+                if ("auto" !== slidesPerView && "row" === fill) slidesNumberEvenToRows = Math.max(slidesNumberEvenToRows, slidesPerView * rows);
+            };
+            const updateSlide = (i, slide, slidesLength, getDirectionLabel) => {
+                const {slidesPerGroup, spaceBetween} = swiper.params;
+                const {rows, fill} = swiper.params.grid;
+                let newSlideOrderIndex;
+                let column;
+                let row;
+                if ("row" === fill && slidesPerGroup > 1) {
+                    const groupIndex = Math.floor(i / (slidesPerGroup * rows));
+                    const slideIndexInGroup = i - rows * slidesPerGroup * groupIndex;
+                    const columnsInGroup = 0 === groupIndex ? slidesPerGroup : Math.min(Math.ceil((slidesLength - groupIndex * rows * slidesPerGroup) / rows), slidesPerGroup);
+                    row = Math.floor(slideIndexInGroup / columnsInGroup);
+                    column = slideIndexInGroup - row * columnsInGroup + groupIndex * slidesPerGroup;
+                    newSlideOrderIndex = column + row * slidesNumberEvenToRows / rows;
+                    slide.css({
+                        "-webkit-order": newSlideOrderIndex,
+                        order: newSlideOrderIndex
+                    });
+                } else if ("column" === fill) {
+                    column = Math.floor(i / rows);
+                    row = i - column * rows;
+                    if (column > numFullColumns || column === numFullColumns && row === rows - 1) {
+                        row += 1;
+                        if (row >= rows) {
+                            row = 0;
+                            column += 1;
+                        }
+                    }
+                } else {
+                    row = Math.floor(i / slidesPerRow);
+                    column = i - row * slidesPerRow;
+                }
+                slide.css(getDirectionLabel("margin-top"), 0 !== row ? spaceBetween && `${spaceBetween}px` : "");
+            };
+            const updateWrapperSize = (slideSize, snapGrid, getDirectionLabel) => {
+                const {spaceBetween, centeredSlides, roundLengths} = swiper.params;
+                const {rows} = swiper.params.grid;
+                swiper.virtualSize = (slideSize + spaceBetween) * slidesNumberEvenToRows;
+                swiper.virtualSize = Math.ceil(swiper.virtualSize / rows) - spaceBetween;
+                swiper.$wrapperEl.css({
+                    [getDirectionLabel("width")]: `${swiper.virtualSize + spaceBetween}px`
+                });
+                if (centeredSlides) {
+                    snapGrid.splice(0, snapGrid.length);
+                    const newSlidesGrid = [];
+                    for (let i = 0; i < snapGrid.length; i += 1) {
+                        let slidesGridItem = snapGrid[i];
+                        if (roundLengths) slidesGridItem = Math.floor(slidesGridItem);
+                        if (snapGrid[i] < swiper.virtualSize + snapGrid[0]) newSlidesGrid.push(slidesGridItem);
+                    }
+                    snapGrid.push(...newSlidesGrid);
+                }
+            };
+            swiper.grid = {
+                initSlides,
+                updateSlide,
+                updateWrapperSize
+            };
+        }
         function initSliders() {
             if (document.querySelector(".content-block__slider")) new core(".content-block__slider", {
                 modules: [ Navigation, Lazy, Pagination ],
@@ -4209,6 +4286,60 @@
                     992: {
                         slidesPerView: 3,
                         spaceBetween: 40
+                    }
+                },
+                on: {}
+            });
+            if (document.querySelector(".receipt__slider")) new core(".receipt__slider", {
+                modules: [ Navigation, Lazy, Pagination, Grid ],
+                observer: true,
+                observeParents: true,
+                slidesPerView: 4,
+                spaceBetween: 25,
+                autoHeight: false,
+                speed: 800,
+                grid: {
+                    rows: 2,
+                    fill: "2" | "4"
+                },
+                preloadImages: false,
+                lazy: true,
+                pagination: {
+                    el: ".receipt-pagination",
+                    clickable: true
+                },
+                breakpoints: {
+                    320: {
+                        grid: {
+                            rows: 1,
+                            fill: "2" | "4"
+                        },
+                        slidesPerView: 1,
+                        spaceBetween: 25
+                    },
+                    360: {
+                        grid: {
+                            rows: 2,
+                            fill: "2" | "4"
+                        },
+                        slidesPerView: 2,
+                        spaceBetween: 15
+                    },
+                    500: {
+                        grid: {
+                            rows: 2,
+                            fill: "2" | "4"
+                        },
+                        slidesPerView: 3,
+                        spaceBetween: 25
+                    },
+                    700: {
+                        grid: {
+                            rows: 2,
+                            fill: "2" | "4"
+                        },
+                        slidesPerView: 4,
+                        spaceBetween: 25
                     }
                 },
                 on: {}
