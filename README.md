@@ -11,22 +11,22 @@ devices and screens.
 
 ## Key Skills:
 
-- Knowledge of JavaScript and jQuery: Ability to add interactivity to web pages, handle events, create animations, work
-  with AJAX and basic jQuery functionality.
+- Knowledge of JavaScript: Ability to add interactivity to web pages, handle events, create animations, work
+  with AJAX and basic functionality.
 
-- Adaptive design and mobile layout: Experience with media queries, CSS frameworks (e.g. Bootstrap) and other tools for
+- Adaptive design and mobile layout: Experience with media queries, CSS frameworks and other tools for
   creating responsive and mobile design.
 
 - Experience with CSS preprocessors: Knowledge and use of preprocessors such as Sass or Less to simplify CSS code
   development and maintenance.
 
 - Cross-browser compatibility: Ability to create web pages that work equally well across browsers (Chrome, Firefox,
-  Safari, Edge, etc.) and platforms.
+  Safari, etc.) and platforms.
 
 - Performance Optimization: Skills in optimizing page load, compressing and optimizing images, minifying and building
   CSS and JavaScript files, caching and other techniques to improve site performance.
 
-- Development Tools: Experience with code editors (e.g. Visual Studio Code), version control systems (e.g. Git), and
+- Development Tools: Experience with code editors (e.g. Visual Studio Code, WebStorm), version control systems (e.g. Git), and
   browser inspectors (e.g. Chrome DevTools) for efficient development and debugging.
 
 - Proficiency with design files and designer tools: Experience working with design files (e.g. PSD, Sketch, Figma) and
